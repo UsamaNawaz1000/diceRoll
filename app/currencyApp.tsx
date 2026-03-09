@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CurrencyButton from '../components/ui/CurrencyButton';
-import { currencyByRupee } from '../app/constants';
+import { currencyByRupee } from '../constants/constants';
 
 export default function CurrencyApp() {
     const [inputValue, setInputValue] = useState<string>('');

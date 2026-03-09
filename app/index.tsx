@@ -14,7 +14,7 @@ export default function HomeScreen() {
   }
 
   const navigateToTicTacToe= () =>{
-    router.push('/Tic-tac-toe' as Href);
+    router.push('/TicTacToe' as Href);
   }
 
   return (
@@ -62,7 +62,7 @@ export default function HomeScreen() {
 
         <TouchableOpacity 
           style={styles.menuItem}
-          onPress={navigateToCurrencyApp}
+          onPress={navigateToTicTacToe}
           activeOpacity={0.7}
         >
           <View style={styles.iconContainer}>
