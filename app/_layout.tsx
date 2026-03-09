@@ -12,6 +12,21 @@ export default function RootLayout() {
             headerShown: false 
           }} 
         />
+        <Stack.Screen 
+        name="curencyApp" 
+        options={{ 
+          title: 'Currency App',
+          headerStyle: { backgroundColor: '#007AFF' },
+          headerTintColor: '#fff',
+        }}
+        />
+        <Stack.Screen 
+        name="Tic-tac-toe" 
+        options={{ 
+          title: 'Tik-tac-toe game',
+          headerStyle: { backgroundColor: '#007AFF' },
+          headerTintColor: '#fff',
+        }}/>
       </Stack>
       <StatusBar style="auto" />
     </>

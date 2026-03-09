@@ -1,78 +1,99 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
-import * as Haptics from 'expo-haptics';
-import Dice from '../components/Dice';
-
-// Import dice images
-const diceImages = {
-  1: require('../assets/diceimages/dice1.png'),
-  2: require('../assets/diceimages/dice2.png'),
-  3: require('../assets/diceimages/dice3.png'),
-  4: require('../assets/diceimages/dice4.png'),
-  5: require('../assets/diceimages/dice5.png'),
-  6: require('../assets/diceimages/dice6.png'),
-};
+// app/index.tsx
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Href, router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
-  const [currentValue, setCurrentValue] = useState<number>(1);
-  const [rolling, setRolling] = useState<boolean>(false);
-
-  const rollDice = async () => {
-    if (rolling) return;
-    
-    setRolling(true);
-    
-    // Simulate rolling animation with haptic feedback
-    for (let i = 0; i < 10; i++) {
-      setTimeout(async () => {
-        const randomValue = Math.floor(Math.random() * 6) + 1;
-        setCurrentValue(randomValue);
-        
-        // Light haptic for each "tick" of the roll
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      }, i * 50);
-    }
-    
-    // Final result with success haptic
-    setTimeout(async () => {
-      const finalValue = Math.floor(Math.random() * 6) + 1;
-      setCurrentValue(finalValue);
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      setRolling(false);
-      
-      // Show alert with result (demonstrating children pattern)
-      Alert.alert('Dice Rolled!', `You got ${finalValue}`);
-    }, 500);
+  const navigateToDiceRoll = () => {
+    router.push('/diceRollScreen' as Href);
   };
+  
+  const navigateToCurrencyApp = () => {
+    router.push('/currencyApp' as Href);
+  }
+
+  const navigateToTicTacToe= () =>{
+    router.push('/Tic-tac-toe' as Href);
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Dice Roller</Text>
-      
-      {/* Basic Dice usage */}
-      <Dice 
-        imageSource={diceImages[currentValue as keyof typeof diceImages]} 
-        onPress={rollDice}
-        size={200}
-      />
-      
-      {/* Example of using children - adds a label */}
-      <Dice 
-        imageSource={diceImages[currentValue as keyof typeof diceImages]}
-        size={100}
-      >
-        <Text style={styles.diceLabel}>Roll me!</Text>
-      </Dice>
-      
-      <Text style={styles.result}>Result: {currentValue}</Text>
-      
-      <View style={styles.buttonContainer}>
-        <Button 
-          title={rolling ? "Rolling..." : "Roll Dice"} 
-          onPress={rollDice}
-          disabled={rolling}
-          color="#007AFF"
-        />
+      <View style={styles.header}>
+        <Text style={styles.title}>Game App</Text>
+        <Text style={styles.subtitle}>Select a game to play</Text>
+      </View>
+
+      <View style={styles.menuContainer}>
+        {/* Dice Roll Game Option */}
+        <TouchableOpacity 
+          style={styles.menuItem}
+          onPress={navigateToDiceRoll}
+          activeOpacity={0.7}
+        >
+          <View style={styles.iconContainer}>
+            <Ionicons name="game-controller" size={40} color="#007AFF" />
+          </View>
+          <View style={styles.menuTextContainer}>
+            <Text style={styles.menuTitle}>Dice Roller</Text>
+            <Text style={styles.menuDescription}>
+              Roll the dice and test your luck!
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={24} color="#999" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.menuItem}
+          onPress={navigateToCurrencyApp}
+          activeOpacity={0.7}
+        >
+          <View style={styles.iconContainer}>
+            <Ionicons name="game-controller" size={40} color="#007AFF" />
+          </View>
+          <View style={styles.menuTextContainer}>
+            <Text style={styles.menuTitle}>Currency App</Text>
+            <Text style={styles.menuDescription}>
+              convert currencies and check exchange rates! (Coming Soon)
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={24} color="#999" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.menuItem}
+          onPress={navigateToCurrencyApp}
+          activeOpacity={0.7}
+        >
+          <View style={styles.iconContainer}>
+            <Ionicons name="game-controller" size={40} color="#007AFF" />
+          </View>
+          <View style={styles.menuTextContainer}>
+            <Text style={styles.menuTitle}>Tic tac toe</Text>
+            <Text style={styles.menuDescription}>
+              Play the classic Tic Tac Toe game!
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={24} color="#999" />
+        </TouchableOpacity>
+
+        {/* You can add more games here later */}
+        <TouchableOpacity 
+          style={[styles.menuItem, styles.comingSoon]}
+          disabled={true}
+        >
+          <View style={styles.iconContainer}>
+            <Ionicons name="construct" size={40} color="#999" />
+          </View>
+          <View style={styles.menuTextContainer}>
+            <Text style={[styles.menuTitle, styles.comingSoonText]}>
+              More Games Coming Soon
+            </Text>
+            <Text style={styles.menuDescription}>
+              Stay tuned for updates!
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -81,36 +102,68 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    paddingTop: 60,
+    paddingBottom: 30,
+    paddingHorizontal: 20,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 40,
     color: '#333',
+    marginBottom: 8,
   },
-  result: {
-    fontSize: 24,
-    marginTop: 30,
-    marginBottom: 20,
-    color: '#555',
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
   },
-  buttonContainer: {
-    width: '80%',
-    marginTop: 20,
+  menuContainer: {
+    padding: 20,
   },
-  diceLabel: {
-    position: 'absolute',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 12,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 20,
     borderRadius: 12,
-    bottom: 10,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  iconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#f0f8ff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  menuTextContainer: {
+    flex: 1,
+  },
+  menuTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 4,
+  },
+  menuDescription: {
+    fontSize: 14,
+    color: '#666',
+  },
+  comingSoon: {
+    opacity: 0.6,
+  },
+  comingSoonText: {
+    color: '#999',
   },
 });
